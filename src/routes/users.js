@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/db');
 const User = require('../models/User');
 const generateSecureToken = require('../utils/generateSecureToken');
+const { renderUsers } = require('../utils/pages');
 
 /**
  * Обрабатывает ошибки запросов к БД
@@ -109,5 +110,38 @@ const login = async (req, res) => {
 };
 
 router.post('/login', login);
+
+/**
+ * Получение списка пользователей с фильтрацией
+ */
+const getUsers = async (req, res) => {
+  try {
+    const users = await db.find('users', req.query);
+
+    res.send(renderUsers(users));
+  } catch (err) {
+    createRequestError(res, err, 'Failed to fetch user');
+  }
+};
+
+router.get('/', initUsersCollection, getUsers);
+
+/**
+ * Получение пользователя по ID
+ */
+const getUserById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await db.getById('users', id);
+    res.json(user);
+  } catch (err) {
+    if (err.code === db.DB_ERRORS.NO_ENTITY) {
+      return res.status(404).send(`Unknown user ID: ${id}`);
+    }
+    createRequestError(res, err, 'Failed to fetch user');
+  }
+};
+
+router.get('/:id', initUsersCollection, getUserById);
 
 module.exports = router;

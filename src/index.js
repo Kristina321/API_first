@@ -1,4 +1,5 @@
 const express = require('express');
+const { welcome } = require('./utils/pages');
 
 // Создание экземпляра Express-приложения
 const app = express();
@@ -13,6 +14,12 @@ app.use(express.static('public'));
 // Подключение роутера для работы с пользователями
 // Все запросы, начинающиеся с '/api/users/', будут переданы в users.js
 app.use('/api/users/', require('./routes/users'));
+
+// Обработчик GET-запроса к корневому пути ('/')
+// Срабатывает, когда пользователь обращается к http://localhost:3000/
+app.get('/', (req, res) => {
+  res.send(welcome);
+});
 
 // Middleware для обработки ошибок (вызывается при передаче ошибки в next(err))
 app.use((err, req, res, next) => {

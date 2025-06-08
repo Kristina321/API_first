@@ -1,7 +1,7 @@
 /**
- * Генерирует ключ авторизации
- * @param {number} count - Количество групп в ключе (по умолчанию 4)
- * @returns {string} Ключ в формате "XXXXXXXX_XXXXXXXX_XXXXXXXX_XXXXXXXX" (длина зависит от count)
+ * Генерирует токен безопасности
+ * @param {number} count - Количество групп в токене (по умолчанию 4)
+ * @returns {string} Токен в формате "XXXXXXXX_XXXXXXXX_XXXXXXXX_XXXXXXXX" (длина зависит от count)
  *
  * Правила генерации:
  * - Каждая группа содержит: 2 заглавные буквы, 2 строчные, 2 цифры, 2 спецсимвола
@@ -13,7 +13,7 @@ function generateSecureToken(count = 4) {
   const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
   const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numberChars = '0123456789';
-  const symbolChars = `!@#$%^&*`;//`!@#$%^&*()_+-=[]{}|;:',<>?/`
+  const symbolChars = `!@#$%^&*`; //`!@#$%^&*()_+-=[]{}|;:',<>?/`
 
   /**
    * Генерирует случайные символы из указанного набора
